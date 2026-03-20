@@ -121,8 +121,6 @@ Dynamic configuration is stored in `config/dynamicconfig/development-sql.yaml`. 
 │   └── dynamicconfig/
 │       └── development-sql.yaml
 └── containers/
-    ├── postgresql-temporal/
-    │   └── Containerfile
     ├── temporal-server/
     │   └── Containerfile
     ├── temporal-admin-tools/
@@ -133,11 +131,11 @@ Dynamic configuration is stored in `config/dynamicconfig/development-sql.yaml`. 
 
 ## Containerfiles
 
-Each service has its own Containerfile in the `containers/` directory:
+Temporal services have their own Containerfile in the `containers/` directory. PostgreSQL uses the official image directly.
 
 | Service | Base Image | Description |
 |---------|------------|-------------|
-| `postgresql-temporal` | `postgres:16-alpine` | PostgreSQL database for persistence |
+| `postgresql-temporal` | `postgres:16-alpine` | PostgreSQL database (official image) |
 | `temporal-server` | `temporalio/auto-setup:1.26.2` | Temporal server with PostgreSQL config |
 | `temporal-admin-tools` | `temporalio/admin-tools:1.26.2` | CLI tools for administration |
 | `temporal-ui` | `temporalio/ui:2.34.0` | Web UI for workflow visualization |

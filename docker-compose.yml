@@ -5,9 +5,7 @@ x-postgres-config: &postgres-config
 
 services:
   postgresql-temporal:
-    build:
-      context: ./containers/postgresql-temporal
-      dockerfile: Containerfile
+    image: postgres:16-alpine
     container_name: postgresql-temporal
     environment:
       <<: *postgres-config
