@@ -9,7 +9,7 @@ A Docker Compose setup for running [Temporal](https://temporal.io/) server with 
 | `temporal` | Temporal server (gRPC API) | 7233 |
 | `temporal-ui` | Temporal Web UI | 8080 |
 | `temporal-admin-tools` | CLI tools for administration | - |
-| `postgresql` | PostgreSQL database | 5432 |
+| `postgresql` | PostgreSQL database | internal only |
 
 ## Prerequisites
 
@@ -90,14 +90,23 @@ docker compose exec temporal-admin-tools tctl --namespace my-namespace namespace
 
 ### Environment Variables
 
-The following environment variables can be customized in `docker-compose.yml`:
+PostgreSQL credentials are defined once using a YAML anchor (`x-postgres-config`) and shared across services. The Temporal service inherits these values automatically via Docker's internal network.
+
+You can override the defaults by setting environment variables before running docker compose:
+
+```bash
+export POSTGRES_USER=myuser
+export POSTGRES_PASSWORD=mypassword
+docker compose up -d
+```
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `POSTGRES_USER` | `temporal` | PostgreSQL username |
-| `POSTGRES_PWD` | `temporal` | PostgreSQL password |
-| `POSTGRES_SEEDS` | `postgresql` | PostgreSQL host |
-| `DB_PORT` | `5432` | PostgreSQL port |
+| `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
+| `POSTGRES_DB` | `temporal` | PostgreSQL database name |
+
+The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql:5432`), so no external port exposure is required for the database.
 
 ### Dynamic Configuration
 
@@ -119,11 +128,11 @@ docker build -f Containerfile -t my-temporal-server .
 
 ## Ports
 
-| Port | Service | Protocol |
-|------|---------|----------|
-| 7233 | Temporal gRPC | TCP |
-| 8080 | Temporal UI | HTTP |
-| 5432 | PostgreSQL | TCP |
+| Port | Service | Protocol | Exposed |
+|------|---------|----------|---------|
+| 7233 | Temporal gRPC | TCP | Host |
+| 8080 | Temporal UI | HTTP | Host |
+| 5432 | PostgreSQL | TCP | Internal only |
 
 ## Troubleshooting
 
@@ -134,7 +143,6 @@ Check if ports are already in use:
 ```bash
 lsof -i :7233
 lsof -i :8080
-lsof -i :5432
 ```
 
 ### Database connection issues
