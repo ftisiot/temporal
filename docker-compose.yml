@@ -5,7 +5,9 @@ x-postgres-config: &postgres-config
 
 services:
   postgresql-temporal:
-    image: postgres:16-alpine
+    build:
+      context: ./containers/postgresql-temporal
+      dockerfile: Containerfile
     container_name: postgresql-temporal
     environment:
       <<: *postgres-config
@@ -23,7 +25,7 @@ services:
 
   temporal:
     build:
-      context: .
+      context: ./containers/temporal-server
       dockerfile: Containerfile
     container_name: temporal-server
     depends_on:
@@ -52,7 +54,9 @@ services:
       start_period: 30s
 
   temporal-admin-tools:
-    image: temporalio/admin-tools:1.26.2
+    build:
+      context: ./containers/temporal-admin-tools
+      dockerfile: Containerfile
     container_name: temporal-admin-tools
     depends_on:
       temporal:
@@ -65,7 +69,9 @@ services:
     tty: true
 
   temporal-ui:
-    image: temporalio/ui:2.34.0
+    build:
+      context: ./containers/temporal-ui
+      dockerfile: Containerfile
     container_name: temporal-ui
     depends_on:
       temporal:

@@ -1,0 +1,20 @@
+# PostgreSQL for Temporal persistence
+# Based on the official PostgreSQL Alpine image
+
+FROM postgres:16-alpine
+
+LABEL maintainer="your-email@example.com"
+LABEL description="PostgreSQL database for Temporal persistence"
+LABEL version="16-alpine"
+
+# Default environment variables (can be overridden)
+ENV POSTGRES_USER=temporal
+ENV POSTGRES_PASSWORD=temporal
+ENV POSTGRES_DB=temporal
+
+# Expose PostgreSQL port
+EXPOSE 5432
+
+# Health check
+HEALTHCHECK --interval=5s --timeout=5s --retries=10 \
+    CMD pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1

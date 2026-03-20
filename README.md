@@ -112,18 +112,46 @@ The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgr
 
 Dynamic configuration is stored in `config/dynamicconfig/development-sql.yaml`. This file is mounted into the Temporal container and allows runtime configuration of various Temporal parameters.
 
-## Containerfile
+## Project Structure
 
-The included `Containerfile` extends the official `temporalio/auto-setup` image with:
+```
+.
+├── docker-compose.yml
+├── config/
+│   └── dynamicconfig/
+│       └── development-sql.yaml
+└── containers/
+    ├── postgresql-temporal/
+    │   └── Containerfile
+    ├── temporal-server/
+    │   └── Containerfile
+    ├── temporal-admin-tools/
+    │   └── Containerfile
+    └── temporal-ui/
+        └── Containerfile
+```
 
-- Pre-configured PostgreSQL backend settings
-- Health check configuration
-- Dynamic config directory setup
+## Containerfiles
 
-To build a custom image:
+Each service has its own Containerfile in the `containers/` directory:
+
+| Service | Base Image | Description |
+|---------|------------|-------------|
+| `postgresql-temporal` | `postgres:16-alpine` | PostgreSQL database for persistence |
+| `temporal-server` | `temporalio/auto-setup:1.26.2` | Temporal server with PostgreSQL config |
+| `temporal-admin-tools` | `temporalio/admin-tools:1.26.2` | CLI tools for administration |
+| `temporal-ui` | `temporalio/ui:2.34.0` | Web UI for workflow visualization |
+
+To build a specific image:
 
 ```bash
-docker build -f Containerfile -t my-temporal-server .
+docker build -f containers/temporal-server/Containerfile -t my-temporal-server containers/temporal-server/
+```
+
+To build all images:
+
+```bash
+docker compose build
 ```
 
 ## Ports

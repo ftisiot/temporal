@@ -10,14 +10,11 @@ LABEL version="1.26.2"
 # Set environment variables for PostgreSQL backend
 ENV DB=postgres12
 ENV DB_PORT=5432
-ENV POSTGRES_SEEDS=postgresql
+ENV POSTGRES_SEEDS=postgresql-temporal
 ENV DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
 
 # Create directory for dynamic config
 RUN mkdir -p /etc/temporal/config/dynamicconfig
-
-# Copy dynamic config if needed (mounted via volume in docker-compose)
-# COPY config/dynamicconfig/development-sql.yaml /etc/temporal/config/dynamicconfig/
 
 # Expose Temporal gRPC port
 EXPOSE 7233

@@ -1,0 +1,13 @@
+# Temporal Admin Tools
+# Based on the official Temporal admin-tools image
+
+FROM temporalio/admin-tools:1.26.2
+
+LABEL maintainer="your-email@example.com"
+LABEL description="Temporal CLI and administrative tools"
+LABEL version="1.26.2"
+
+# Default Temporal server address
+ENV TEMPORAL_ADDRESS=temporal:7233
+
+# No exposed ports - CLI tool only

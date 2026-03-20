@@ -1,0 +1,15 @@
+# Temporal Web UI
+# Based on the official Temporal UI image
+
+FROM temporalio/ui:2.34.0
+
+LABEL maintainer="your-email@example.com"
+LABEL description="Temporal Web UI for workflow visualization"
+LABEL version="2.34.0"
+
+# Default environment variables
+ENV TEMPORAL_ADDRESS=temporal:7233
+ENV TEMPORAL_CORS_ORIGINS=http://localhost:3000
+
+# Expose UI port
+EXPOSE 8080
