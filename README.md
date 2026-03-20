@@ -90,16 +90,14 @@ docker compose exec temporal-admin-tools tctl --namespace my-namespace namespace
 
 ### Environment Variables
 
-Configuration is centralized using YAML anchors:
-- `x-postgres-config` - PostgreSQL connection settings
-- `x-temporal-db-config` - Temporal database driver settings
+Configuration is centralized using a YAML anchor (`x-postgres-config`) for PostgreSQL settings. The Temporal service connects using a `DATABASE_URL` constructed from these values.
 
 You can override the defaults by setting environment variables before running docker compose:
 
 ```bash
 export POSTGRES_USER=myuser
 export POSTGRES_PASSWORD=mypassword
-export POSTGRES_PORT=5432
+export POSTGRES_DB=mydb
 docker compose up -d
 ```
 
@@ -108,10 +106,18 @@ docker compose up -d
 | `POSTGRES_USER` | `temporal` | PostgreSQL username |
 | `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
 | `POSTGRES_DB` | `temporal` | PostgreSQL database name |
-| `POSTGRES_PORT` | `5432` | PostgreSQL port |
-| `DB` | `postgres12` | Temporal database driver |
 
-The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql-temporal`) and the configured port, so no external port exposure is required for the database.
+### DATABASE_URL
+
+The Temporal service receives a `DATABASE_URL` in the format:
+
+```
+postgresql://user:password@host:port/database
+```
+
+The custom entrypoint script parses this URL and sets the individual environment variables that Temporal expects (`POSTGRES_USER`, `POSTGRES_PWD`, `POSTGRES_SEEDS`, `DB_PORT`, `POSTGRES_DB`).
+
+The connection uses Docker's internal DNS (`postgresql-temporal`), so no external port exposure is required for the database.
 
 ### Dynamic Configuration
 
