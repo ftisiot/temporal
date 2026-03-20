@@ -41,7 +41,9 @@ services:
       - temporal-network
 
   temporal-ui:
-    image: temporalio/ui:2.34.0
+    build:
+      context: ./containers/temporal-ui
+      dockerfile: Containerfile
     container_name: temporal-ui
     depends_on:
       - temporal

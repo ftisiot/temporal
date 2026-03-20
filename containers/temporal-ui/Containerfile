@@ -1,0 +1,9 @@
+# Temporal Web UI
+# Based on the official Temporal UI image
+
+FROM temporalio/ui:2.34.0
+
+LABEL description="Temporal Web UI"
+LABEL version="2.34.0"
+
+EXPOSE 8080

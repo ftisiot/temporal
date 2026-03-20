@@ -77,9 +77,11 @@ The entrypoint script parses this URL into individual environment variables for 
 │   └── dynamicconfig/
 │       └── development-sql.yaml
 └── containers/
-    └── temporal-server/
-        ├── Containerfile
-        └── entrypoint.sh
+    ├── temporal-server/
+    │   ├── Containerfile
+    │   └── entrypoint.sh
+    └── temporal-ui/
+        └── Containerfile
 ```
 
 ## Resources
