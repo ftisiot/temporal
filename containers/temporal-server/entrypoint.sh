@@ -31,5 +31,9 @@ if [ -n "$DATABASE_URL" ]; then
     echo "  POSTGRES_DB: $POSTGRES_DB"
 fi
 
-# Execute the original entrypoint
-exec /etc/temporal/entrypoint.sh "$@"
+# Ensure DB type is set for PostgreSQL
+export DB="${DB:-postgres12}"
+echo "  DB: $DB"
+
+# Execute the original entrypoint from the base image
+exec /start-temporal.sh
