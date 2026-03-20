@@ -3,22 +3,13 @@
 
 FROM temporalio/auto-setup:1.26.2
 
-LABEL maintainer="your-email@example.com"
 LABEL description="Temporal Server configured for PostgreSQL backend"
 LABEL version="1.26.2"
 
 # Copy custom entrypoint that parses DATABASE_URL
-COPY entrypoint.sh /etc/temporal/custom-entrypoint.sh
-RUN chmod +x /etc/temporal/custom-entrypoint.sh
-
-# Create directory for dynamic config
-RUN mkdir -p /etc/temporal/config/dynamicconfig
+COPY --chmod=755 entrypoint.sh /etc/temporal/custom-entrypoint.sh
 
 # Expose Temporal gRPC port
 EXPOSE 7233
-
-# Health check
-HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=10 \
-    CMD tctl --address localhost:7233 cluster health || exit 1
 
 ENTRYPOINT ["/etc/temporal/custom-entrypoint.sh"]
