@@ -30,14 +30,16 @@ services:
       postgresql-temporal:
         condition: service_healthy
     environment:
-      DB: postgres12
-      DB_PORT: 5432
-      POSTGRES_SEEDS: postgresql-temporal
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PWD: ${POSTGRES_PASSWORD:-postgres}
-      DBNAME: ${POSTGRES_DB:-postgres}
-      VISIBILITY_DBNAME: ${POSTGRES_DB:-postgres}_visibility
-      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_SEEDS=postgresql-temporal
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-postgres}
+      - DBNAME=${POSTGRES_DB:-postgres}
+      - VISIBILITY_DBNAME=${POSTGRES_DB:-postgres}_visibility
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
+      - SKIP_DB_CREATE=false
+      - SKIP_SCHEMA_SETUP=false
     ports:
       - "7233:7233"
     volumes:
