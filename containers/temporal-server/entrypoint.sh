@@ -36,4 +36,4 @@ export DB="${DB:-postgres12}"
 echo "  DB: $DB"
 
 # Execute the original entrypoint from the base image
-exec /start-temporal.sh
+exec /etc/temporal/auto-setup.sh
