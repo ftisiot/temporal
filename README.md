@@ -90,13 +90,16 @@ docker compose exec temporal-admin-tools tctl --namespace my-namespace namespace
 
 ### Environment Variables
 
-PostgreSQL credentials are defined once using a YAML anchor (`x-postgres-config`) and shared across services. The Temporal service inherits these values automatically via Docker's internal network.
+Configuration is centralized using YAML anchors:
+- `x-postgres-config` - PostgreSQL connection settings
+- `x-temporal-db-config` - Temporal database driver settings
 
 You can override the defaults by setting environment variables before running docker compose:
 
 ```bash
 export POSTGRES_USER=myuser
 export POSTGRES_PASSWORD=mypassword
+export POSTGRES_PORT=5432
 docker compose up -d
 ```
 
@@ -105,8 +108,10 @@ docker compose up -d
 | `POSTGRES_USER` | `temporal` | PostgreSQL username |
 | `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
 | `POSTGRES_DB` | `temporal` | PostgreSQL database name |
+| `POSTGRES_PORT` | `5432` | PostgreSQL port |
+| `DB` | `postgres12` | Temporal database driver |
 
-The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql-temporal:5432`), so no external port exposure is required for the database.
+The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql-temporal`) and the configured port, so no external port exposure is required for the database.
 
 ### Dynamic Configuration
 
