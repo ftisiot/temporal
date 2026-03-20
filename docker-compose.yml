@@ -35,6 +35,8 @@ services:
       POSTGRES_SEEDS: postgresql-temporal
       POSTGRES_USER: ${POSTGRES_USER:-temporal}
       POSTGRES_PWD: ${POSTGRES_PASSWORD:-temporal}
+      DBNAME: ${POSTGRES_DB:-temporal}
+      VISIBILITY_DBNAME: ${POSTGRES_DB:-temporal}_visibility
       DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
     ports:
       - "7233:7233"
