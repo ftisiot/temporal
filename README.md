@@ -9,7 +9,7 @@ A Docker Compose setup for running [Temporal](https://temporal.io/) server with 
 | `temporal` | Temporal server (gRPC API) | 7233 |
 | `temporal-ui` | Temporal Web UI | 8080 |
 | `temporal-admin-tools` | CLI tools for administration | - |
-| `postgresql` | PostgreSQL database | internal only |
+| `postgresql-temporal` | PostgreSQL database | internal only |
 
 ## Prerequisites
 
@@ -106,7 +106,7 @@ docker compose up -d
 | `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
 | `POSTGRES_DB` | `temporal` | PostgreSQL database name |
 
-The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql:5432`), so no external port exposure is required for the database.
+The Temporal service connects to PostgreSQL using Docker's internal DNS (`postgresql-temporal:5432`), so no external port exposure is required for the database.
 
 ### Dynamic Configuration
 
@@ -150,7 +150,7 @@ lsof -i :8080
 Verify PostgreSQL is healthy:
 
 ```bash
-docker compose exec postgresql pg_isready -U temporal
+docker compose exec postgresql-temporal pg_isready -U temporal
 ```
 
 ### View Temporal server logs

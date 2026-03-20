@@ -4,9 +4,9 @@ x-postgres-config: &postgres-config
   POSTGRES_DB: temporal
 
 services:
-  postgresql:
+  postgresql-temporal:
     image: postgres:16-alpine
-    container_name: temporal-postgresql
+    container_name: postgresql-temporal
     environment:
       <<: *postgres-config
     expose:
@@ -27,14 +27,14 @@ services:
       dockerfile: Containerfile
     container_name: temporal-server
     depends_on:
-      postgresql:
+      postgresql-temporal:
         condition: service_healthy
     environment:
       - DB=postgres12
       - DB_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-temporal}
       - POSTGRES_PWD=${POSTGRES_PASSWORD:-temporal}
-      - POSTGRES_SEEDS=postgresql
+      - POSTGRES_SEEDS=postgresql-temporal
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
     expose:
       - "7233"
