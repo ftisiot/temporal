@@ -7,7 +7,8 @@ A minimal Docker Compose setup for running [Temporal](https://temporal.io/) serv
 | Service | Description | Port |
 |---------|-------------|------|
 | `temporal` | Temporal server (gRPC API) | 7233 |
-| `postgresql-temporal` | PostgreSQL database | internal only |
+| `temporal-ui` | Temporal Web UI | 8080 |
+| `postgresql-temporal` | PostgreSQL database | 5432 |
 
 ## Prerequisites
 
@@ -20,7 +21,9 @@ A minimal Docker Compose setup for running [Temporal](https://temporal.io/) serv
 docker compose up -d
 ```
 
-Connect your Temporal client to `localhost:7233`.
+- Temporal UI: http://localhost:8080
+- Temporal gRPC: `localhost:7233`
+- PostgreSQL: `localhost:5432`
 
 ## Usage
 

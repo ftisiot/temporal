@@ -9,8 +9,8 @@ services:
     container_name: postgresql-temporal
     environment:
       <<: *postgres-config
-    expose:
-      - "5432"
+    ports:
+      - "5432:5432"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     networks:
@@ -37,6 +37,19 @@ services:
       - "7233:7233"
     volumes:
       - ./config/dynamicconfig:/etc/temporal/config/dynamicconfig
+    networks:
+      - temporal-network
+
+  temporal-ui:
+    image: temporalio/ui:2.34.0
+    container_name: temporal-ui
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CORS_ORIGINS: http://localhost:3000
+    ports:
+      - "8080:8080"
     networks:
       - temporal-network
 
