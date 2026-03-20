@@ -58,16 +58,6 @@ docker compose up -d
 | `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
 | `POSTGRES_DB` | `temporal` | PostgreSQL database name |
 
-### DATABASE_URL
-
-The Temporal service receives a `DATABASE_URL` in the format:
-
-```
-postgresql://user:password@host:port/database
-```
-
-The entrypoint script parses this URL into individual environment variables for Temporal.
-
 ## Project Structure
 
 ```
@@ -78,8 +68,7 @@ The entrypoint script parses this URL into individual environment variables for 
 │       └── development-sql.yaml
 └── containers/
     ├── temporal-server/
-    │   ├── Containerfile
-    │   └── entrypoint.sh
+    │   └── Containerfile
     └── temporal-ui/
         └── Containerfile
 ```

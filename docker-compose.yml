@@ -31,7 +31,10 @@ services:
         condition: service_healthy
     environment:
       DB: postgres12
-      DATABASE_URL: postgresql://${POSTGRES_USER:-temporal}:${POSTGRES_PASSWORD:-temporal}@postgresql-temporal:5432/${POSTGRES_DB:-temporal}
+      DB_PORT: 5432
+      POSTGRES_SEEDS: postgresql-temporal
+      POSTGRES_USER: ${POSTGRES_USER:-temporal}
+      POSTGRES_PWD: ${POSTGRES_PASSWORD:-temporal}
       DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
     ports:
       - "7233:7233"

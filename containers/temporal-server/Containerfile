@@ -6,10 +6,4 @@ FROM temporalio/auto-setup:1.26.2
 LABEL description="Temporal Server configured for PostgreSQL backend"
 LABEL version="1.26.2"
 
-# Copy custom entrypoint that parses DATABASE_URL
-COPY --chmod=755 entrypoint.sh /etc/temporal/custom-entrypoint.sh
-
-# Expose Temporal gRPC port
 EXPOSE 7233
-
-ENTRYPOINT ["/etc/temporal/custom-entrypoint.sh"]
