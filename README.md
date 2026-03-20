@@ -54,9 +54,9 @@ docker compose up -d
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `POSTGRES_USER` | `temporal` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | `temporal` | PostgreSQL password |
-| `POSTGRES_DB` | `temporal` | PostgreSQL database name |
+| `POSTGRES_USER` | `postgres` | PostgreSQL username |
+| `POSTGRES_PASSWORD` | `postgres` | PostgreSQL password |
+| `POSTGRES_DB` | `postgres` | PostgreSQL database name |
 
 ## Project Structure
 

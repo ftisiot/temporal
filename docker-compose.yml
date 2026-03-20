@@ -1,7 +1,7 @@
 x-postgres-config: &postgres-config
-  POSTGRES_USER: ${POSTGRES_USER:-temporal}
-  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-temporal}
-  POSTGRES_DB: ${POSTGRES_DB:-temporal}
+  POSTGRES_USER: ${POSTGRES_USER:-postgres}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+  POSTGRES_DB: ${POSTGRES_DB:-postgres}
 
 services:
   postgresql-temporal:
@@ -33,10 +33,10 @@ services:
       DB: postgres12
       DB_PORT: 5432
       POSTGRES_SEEDS: postgresql-temporal
-      POSTGRES_USER: ${POSTGRES_USER:-temporal}
-      POSTGRES_PWD: ${POSTGRES_PASSWORD:-temporal}
-      DBNAME: ${POSTGRES_DB:-temporal}
-      VISIBILITY_DBNAME: ${POSTGRES_DB:-temporal}_visibility
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PWD: ${POSTGRES_PASSWORD:-postgres}
+      DBNAME: ${POSTGRES_DB:-postgres}
+      VISIBILITY_DBNAME: ${POSTGRES_DB:-postgres}_visibility
       DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
     ports:
       - "7233:7233"
