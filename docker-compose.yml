@@ -13,8 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-    networks:
-      - temporal-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
@@ -44,8 +42,6 @@ services:
       - "7233:7233"
     volumes:
       - ./config/dynamicconfig:/etc/temporal/config/dynamicconfig
-    networks:
-      - temporal-network
 
   temporal-ui:
     build:
@@ -59,12 +55,6 @@ services:
       TEMPORAL_CORS_ORIGINS: http://localhost:3000
     ports:
       - "8080:8080"
-    networks:
-      - temporal-network
-
-networks:
-  temporal-network:
-    driver: bridge
 
 volumes:
   postgresql-data:
