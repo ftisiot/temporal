@@ -33,49 +33,10 @@ services:
       DB: postgres12
       DATABASE_URL: postgresql://${POSTGRES_USER:-temporal}:${POSTGRES_PASSWORD:-temporal}@postgresql-temporal:5432/${POSTGRES_DB:-temporal}
       DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
-    expose:
-      - "7233"
     ports:
       - "7233:7233"
     volumes:
       - ./config/dynamicconfig:/etc/temporal/config/dynamicconfig
-    networks:
-      - temporal-network
-    healthcheck:
-      test: ["CMD", "tctl", "--address", "temporal:7233", "cluster", "health"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-
-  temporal-admin-tools:
-    build:
-      context: ./containers/temporal-admin-tools
-      dockerfile: Containerfile
-    container_name: temporal-admin-tools
-    depends_on:
-      temporal:
-        condition: service_healthy
-    environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-    networks:
-      - temporal-network
-    stdin_open: true
-    tty: true
-
-  temporal-ui:
-    build:
-      context: ./containers/temporal-ui
-      dockerfile: Containerfile
-    container_name: temporal-ui
-    depends_on:
-      temporal:
-        condition: service_healthy
-    environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
-    ports:
-      - "8080:8080"
     networks:
       - temporal-network
 
