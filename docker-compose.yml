@@ -1,12 +1,31 @@
 services:
+  postgresql:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD:-postgres}
+      - POSTGRES_DB=${DBNAME:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   temporal:
     build:
       context: ./containers/temporal-server
       dockerfile: Containerfile
+    depends_on:
+      postgresql:
+        condition: service_healthy
     environment:
       - DB=postgres12
       - DB_PORT=${DB_PORT:-5432}
-      - POSTGRES_SEEDS=${POSTGRES_SEEDS:-localhost}
+      - POSTGRES_SEEDS=${POSTGRES_SEEDS:-postgresql}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PWD=${POSTGRES_PWD:-postgres}
       - DBNAME=${DBNAME:-postgres}
@@ -30,3 +49,6 @@ services:
       TEMPORAL_CORS_ORIGINS: http://localhost:3000
     ports:
       - "8080:8080"
+
+volumes:
+  postgresql-data:
