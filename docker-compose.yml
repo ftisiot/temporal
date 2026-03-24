@@ -1,38 +1,16 @@
-x-postgres-config: &postgres-config
-  POSTGRES_USER: ${POSTGRES_USER:-postgres}
-  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-  POSTGRES_DB: ${POSTGRES_DB:-postgres}
-
 services:
-  postgresql-temporal:
-    image: postgres:16-alpine
-    environment:
-      <<: *postgres-config
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   temporal:
     build:
       context: ./containers/temporal-server
       dockerfile: Containerfile
-    depends_on:
-      postgresql-temporal:
-        condition: service_healthy
     environment:
       - DB=postgres12
-      - DB_PORT=5432
-      - POSTGRES_SEEDS=postgresql-temporal
+      - DB_PORT=${DB_PORT:-5432}
+      - POSTGRES_SEEDS=${POSTGRES_SEEDS:-localhost}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PWD=${POSTGRES_PASSWORD:-postgres}
-      - DBNAME=${POSTGRES_DB:-postgres}
-      - VISIBILITY_DBNAME=${POSTGRES_DB:-postgres}_visibility
+      - POSTGRES_PWD=${POSTGRES_PWD:-postgres}
+      - DBNAME=${DBNAME:-postgres}
+      - VISIBILITY_DBNAME=${VISIBILITY_DBNAME:-postgres_visibility}
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
       - SKIP_DB_CREATE=false
       - SKIP_SCHEMA_SETUP=false
@@ -52,6 +30,3 @@ services:
       TEMPORAL_CORS_ORIGINS: http://localhost:3000
     ports:
       - "8080:8080"
-
-volumes:
-  postgresql-data:
